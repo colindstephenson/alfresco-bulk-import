@@ -94,6 +94,20 @@
     }[#if counterName != importStatus.targetCounterNames?last],[/#if]
     [/#list]
   [/#if]
-  }
+  },
+  "errorInfo" : [
+  [#if importStatus.errorInfo??]
+    [#list importStatus.errorInfo as error]
+    {
+      [#assign timeStamp = error.timeStampStr!'']
+      [#assign item      = error.item!'']
+      [#assign errorData = error.errorStr!'']
+      "TimeStamp" : "${timeStamp?js_string?replace("\\'", "'")?replace("\\>", ">")}",
+      "Item" : "${item?js_string?replace("\\'", "'")?replace("\\>", ">")}",
+      "Error"  : "${errorData?js_string?replace("\\'", "'")?replace("\\>", ">")}"
+    }[#if error != importStatus.errorInfo?last],[/#if]
+    [/#list]
+  [/#if]
+  ]
 [/#if]
 }

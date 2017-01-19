@@ -233,27 +233,25 @@
 [/#if]
           </tbody>
         </table>
+      </div>
 
+      <h3>Error Details (<span id="errorCounter">${importStatus.errorInfo?size}</span> errors)</h3>
+      <div>
 [#-- ERROR INFORMATION --]
-[#if importStatus.lastExceptionAsString??]
-        <div id="detailsErrorInformation" style="display:block">
-[#else]
-        <div id="detailsErrorInformation" style="display:none">
-[/#if]
-          <br/>
-          <table border="1" cellspacing="0" cellpadding="1" width="80%">
-            <thead>
-              <tr>
-                <th colspan="2">Error Information</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Exception:</td>
-                <td><pre style="font-size:8pt" id="detailsLastException">${importStatus.lastExceptionAsString!"n/a"}</pre></td>
-              </tr>
-            </tbody>
-          </table>
+        <div id="errorTableBody" class="errorTableBody">
+        [#list importStatus.errorInfo as error]
+          [#assign timeStamp = error.timeStampStr]
+          [#assign item = error.item]
+          [#assign errorData = error.errorStr]
+          <div>
+            <pre>
+Timestamp: [${timeStamp}]
+Item: [${item}]
+Error Information:
+${errorData}
+            </pre>
+          </div>
+        [/#list]
         </div>
       </div>
     </div>  [#-- End of accordion --]

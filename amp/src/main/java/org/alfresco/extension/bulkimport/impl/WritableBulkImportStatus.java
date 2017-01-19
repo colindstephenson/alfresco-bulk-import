@@ -45,10 +45,10 @@ public interface WritableBulkImportStatus
     void resumeRequested();
     void stopRequested();
     void importComplete();
-    void unexpectedError(Throwable t);
+    void unexpectedError(String itemPathOrNoderef, Throwable t);
 
     void setCurrentlyImporting(String name);
-    void batchCompleted(Batch batch);
+    void batchCompleted(Batch<?> batch);
 
     void preregisterTargetCounters(String[] counterNames);
     void incrementTargetCounter(String counterName);

@@ -393,20 +393,14 @@ function refreshTextElements(cd)
     if (cd.currentlyImporting) document.getElementById("detailsCurrentlyImporting").textContent = cd.currentlyImporting;
 
     // Counters
-    if (cd.sourceCounters) updateTableBody("sourceCounterTableBody", cd.sourceCounters);
-    if (cd.targetCounters) updateTableBody("targetCounterTableBody", cd.targetCounters);
-
-    // Last exception
-    if (cd.lastException)
-    {
-      document.getElementById("detailsErrorInformation").style.display = "block";
-      document.getElementById("detailsLastException").textContent      = cd.lastException;
-    }
+    if (cd.sourceCounters) updateCounterTableBody("sourceCounterTableBody", cd.sourceCounters);
+    if (cd.targetCounters) updateCounterTableBody("targetCounterTableBody", cd.targetCounters);
+    if (cd.errorInfo) updateErrorTableBody("errorCounter", "errorTableBody", cd.errorInfo);
   }
 }
 
 
-function updateTableBody(tableBodyId, counterData)
+function updateCounterTableBody(tableBodyId, counterData)
 {
   var oldTableBody = document.getElementById(tableBodyId);
   var newTableBody = document.createElement("tbody");
@@ -436,6 +430,40 @@ function updateTableBody(tableBodyId, counterData)
   oldTableBody.parentNode.replaceChild(newTableBody, oldTableBody);
 }
 
+function updateErrorTableBody(errorCounterId, tableBodyId, errorInfo)
+{
+  if (errorCounterId)
+  {
+    var errorCounter = document.getElementById(errorCounterId);
+    if (errorCounter)
+    {
+      errorCounter.textContent = errorInfo.length;
+    }
+  }
+
+  var oldDiv = document.getElementById(tableBodyId);
+  var newDiv = document.createElement("div");
+
+  newDiv.id = oldDiv.id;
+  newDiv.className = oldDiv.className;
+
+  for (var error in errorInfo)
+  {
+    error                     = errorInfo[error];
+    var newError              = document.createElement("div");
+    var newErrorData          = document.createElement("pre");
+	newError.appendChild(newErrorData);
+
+	var content               = "Timestamp: [" + error.TimeStamp + "]\n";
+    content                  += "Item: [" + error.Item + "]\n";
+    content                  += "Error Information:\n" + error.Error + "\n";
+    newErrorData.textContent  = content;
+
+	newDiv.appendChild(newError);
+  }
+
+  oldDiv.parentNode.replaceChild(newDiv, oldDiv);
+}
 
 function pauseImport()
 {
